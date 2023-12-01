@@ -2,7 +2,7 @@ package dev.gresty.aoc2023;
 
 import java.util.stream.IntStream;
 
-public class Day01 {
+public class Day01 implements IPuzzle {
 
     private static final String[] DIGITS = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
 
@@ -12,13 +12,14 @@ public class Day01 {
         this.input = input;
     }
 
-    String executeA() {
-        return Integer.toString(execute(Day01::isDigitA));
+    public String part1() {
+        return Integer.toString(execute(Day01::isDigit));
     }
 
-    String executeB() {
-        return Integer.toString(execute(Day01::isDigitB));
+    public String part2() {
+        return Integer.toString(execute(Day01::isDigitOrDigitName));
     }
+
     int execute(final IsDigit isDigit) {
         return input.lines()
                 .mapToInt(line -> 10 * firstDigit(line, isDigit) + lastDigit(line, isDigit))
@@ -26,7 +27,8 @@ public class Day01 {
     }
 
     static int firstDigit(final String line, final IsDigit isDigit) {
-        return findDigit(IntStream.range(0, line.length()), line, isDigit, "first digit");
+        final IntStream increasing = IntStream.range(0, line.length());
+        return findDigit(increasing, line, isDigit, "first digit");
     }
 
     static int lastDigit(final String line, final IsDigit isDigit) {
@@ -48,18 +50,18 @@ public class Day01 {
         return -1;
     }
 
-    static boolean isDigitA(final String line, final int index, final int digit) {
+    static boolean isDigit(final String line, final int index, final int digit) {
         return line.charAt(index) - '0' == digit;
     }
 
-    static boolean isDigitB(final String line, final int index, final int digit) {
-        if (isDigitA(line, index, digit)) return true;
-        return line.startsWith(DIGITS[digit - 1], index);
+    static boolean isDigitOrDigitName(final String line, final int index, final int digit) {
+        return isDigit(line, index, digit) || line.startsWith(DIGITS[digit - 1], index);
     }
 
     public static void main(String[] args) {
-        System.out.println(new Day01(PuzzleInput.load(1)).executeA());
-        System.out.println(new Day01(PuzzleInput.load(1)).executeB());
+        final IPuzzle puzzle = new Day01(PuzzleInput.load(1));
+        System.out.println(puzzle.part1());
+        System.out.println(puzzle.part2());
     }
 
     interface IsDigit {
