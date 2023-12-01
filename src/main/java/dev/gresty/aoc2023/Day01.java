@@ -8,7 +8,7 @@ public class Day01 implements IPuzzle {
 
     private final PuzzleInput input;
 
-    Day01(final PuzzleInput input) {
+    public Day01(final PuzzleInput input) {
         this.input = input;
     }
 
@@ -59,9 +59,7 @@ public class Day01 implements IPuzzle {
     }
 
     public static void main(String[] args) {
-        final IPuzzle puzzle = new Day01(PuzzleInput.load(1));
-        System.out.println(puzzle.part1());
-        System.out.println(puzzle.part2());
+        Main.execute(1);
     }
 
     interface IsDigit {
