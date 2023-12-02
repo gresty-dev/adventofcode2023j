@@ -6,6 +6,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class PuzzleInput {
@@ -17,6 +18,10 @@ public class PuzzleInput {
 
     Stream<String> lines() {
         return data.stream();
+    }
+
+    <T> Stream<T> objects(final Function<String, T> factory) {
+        return lines().map(factory);
     }
 
     @SneakyThrows
