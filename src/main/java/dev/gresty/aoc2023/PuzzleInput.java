@@ -16,6 +16,18 @@ public class PuzzleInput {
         data = input.toList();
     }
 
+    public int lineLength() {
+        return data.get(0).length();
+    }
+
+    public int lineCount() {
+        return data.size();
+    }
+
+    public String line(final int index) {
+        return data.get(index);
+    }
+
     Stream<String> lines() {
         return data.stream();
     }
