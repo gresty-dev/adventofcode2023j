@@ -20,11 +20,11 @@ public class Day03Test {
 
     @Test
     public void testExampleA() {
-        assertThat(new Day03(PuzzleInput.of(EXAMPLE)).part1()).isEqualTo("Not implemented");
+        assertThat(new Day03(PuzzleInput.of(EXAMPLE)).part1()).isEqualTo("4361");
     }
 
     @Test
     public void testExampleB() {
-        assertThat(new Day03(PuzzleInput.of(EXAMPLE)).part2()).isEqualTo("Not implemented");
+        assertThat(new Day03(PuzzleInput.of(EXAMPLE)).part2()).isEqualTo("467835");
     }
 }
