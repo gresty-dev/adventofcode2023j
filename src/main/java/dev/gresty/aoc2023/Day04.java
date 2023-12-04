@@ -1,11 +1,5 @@
 package dev.gresty.aoc2023;
 
-import org.eclipse.collections.api.collection.primitive.MutableIntCollection;
-import org.eclipse.collections.api.factory.primitive.IntLists;
-import org.eclipse.collections.api.factory.primitive.IntSets;
-import org.eclipse.collections.api.list.primitive.IntList;
-import org.eclipse.collections.api.set.primitive.IntSet;
-
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -16,10 +10,8 @@ public class Day04 implements IPuzzle {
     private int idStart;
     private int idEnd;
     private int winnersStart;
-    private int winnersEnd;
     private int winnerCount;
     private int selectedStart;
-    private int selectedEnd;
     private int selectedCount;
 
     public Day04(final PuzzleInput input) {
@@ -53,10 +45,10 @@ public class Day04 implements IPuzzle {
         idStart = line.indexOf(" ") + 1;
         idEnd = line.indexOf(":");
         winnersStart = idEnd + 2;
-        winnersEnd = line.indexOf("|");
+        int winnersEnd = line.indexOf("|");
         winnerCount = (winnersEnd - winnersStart) / 3;
         selectedStart = winnersEnd + 2;
-        selectedEnd = line.length();
+        int selectedEnd = line.length();
         selectedCount = (selectedEnd - selectedStart) / 3 + 1;
     }
 
@@ -64,14 +56,10 @@ public class Day04 implements IPuzzle {
         final var id = Integer.parseInt(line.substring(idStart, idEnd).trim());
         final var winners = IntStream.range(0, winnerCount).map(i -> 3 * i + winnersStart)
                 .map(i -> Integer.parseInt(line.substring(i, i + 2).trim()))
-                .collect(() -> IntSets.mutable.withInitialCapacity(winnerCount),
-                        MutableIntCollection::add,
-                        MutableIntCollection::addAll);
+                .toArray();
         final var selected = IntStream.range(0, selectedCount).map(i -> 3 * i + selectedStart)
                 .map(i -> Integer.parseInt(line.substring(i, i + 2).trim()))
-                .collect(() -> IntLists.mutable.withInitialCapacity(selectedCount),
-                        MutableIntCollection::add,
-                        MutableIntCollection::addAll);
+                .toArray();
 
         return new Card(id, winners, selected);
     }
@@ -80,7 +68,7 @@ public class Day04 implements IPuzzle {
         Main.execute(4);
     }
 
-    record Card(int id, IntSet winners, IntList selected) {
+    record Card(int id, int[] winners, int[] selected) {
 
         int points() {
             final var winCount = (int) winCount();
@@ -89,7 +77,18 @@ public class Day04 implements IPuzzle {
         }
 
         long winCount() {
-            return selected.select(winners::contains).size();
+            int count = 0;
+            for (var s : selected) {
+                count += isWinner(s);
+            }
+            return count;
+        }
+
+        int isWinner(final int value) {
+            for (var w : winners) {
+                if (w == value) return 1;
+            }
+            return 0;
         }
     }
 }
