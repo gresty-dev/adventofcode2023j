@@ -1,5 +1,9 @@
 package dev.gresty.aoc2023;
 
+import it.unimi.dsi.fastutil.ints.IntCollection;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -48,18 +52,17 @@ public class Day04 implements IPuzzle {
         int winnersEnd = line.indexOf("|");
         winnerCount = (winnersEnd - winnersStart) / 3;
         selectedStart = winnersEnd + 2;
-        int selectedEnd = line.length();
-        selectedCount = (selectedEnd - selectedStart) / 3 + 1;
+        selectedCount = (line.length() - selectedStart) / 3 + 1;
     }
 
     Card parse(final String line) {
         final var id = Integer.parseInt(line.substring(idStart, idEnd).trim());
         final var winners = IntStream.range(0, winnerCount).map(i -> 3 * i + winnersStart)
                 .map(i -> Integer.parseInt(line.substring(i, i + 2).trim()))
-                .toArray();
+                .collect(IntOpenHashSet::new, IntCollection::add, IntCollection::addAll);
         final var selected = IntStream.range(0, selectedCount).map(i -> 3 * i + selectedStart)
                 .map(i -> Integer.parseInt(line.substring(i, i + 2).trim()))
-                .toArray();
+                .collect(IntOpenHashSet::new, IntCollection::add, IntCollection::addAll);
 
         return new Card(id, winners, selected);
     }
@@ -68,7 +71,7 @@ public class Day04 implements IPuzzle {
         Main.execute(4);
     }
 
-    record Card(int id, int[] winners, int[] selected) {
+    record Card(int id, IntSet winners, IntSet selected) {
 
         int points() {
             final var winCount = (int) winCount();
@@ -77,18 +80,11 @@ public class Day04 implements IPuzzle {
         }
 
         long winCount() {
-            int count = 0;
-            for (var s : selected) {
-                count += isWinner(s);
-            }
-            return count;
+            return selected.intStream().filter(this::isWinner).count();
         }
 
-        int isWinner(final int value) {
-            for (var w : winners) {
-                if (w == value) return 1;
-            }
-            return 0;
+        boolean isWinner(final int value) {
+            return winners.intStream().anyMatch(w -> w == value);
         }
     }
 }
