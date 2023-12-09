@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Don't commit the puzzle input
+/src/main/resources/dev/gresty/aoc2023/
