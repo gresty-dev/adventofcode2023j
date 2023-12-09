@@ -1,0 +1,3 @@
+setup:
+  - project: adventofcode
+    config: prd
