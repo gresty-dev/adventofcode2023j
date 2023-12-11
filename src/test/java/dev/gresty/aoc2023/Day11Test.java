@@ -7,15 +7,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class Day11Test {
 
     private static final String EXAMPLE = """
-            Example""";
+            ...#......
+            .......#..
+            #.........
+            ..........
+            ......#...
+            .#........
+            .........#
+            ..........
+            .......#..
+            #...#.....""";
 
     @Test
     public void testPart1() {
-        assertThat(new Day11(PuzzleInput.of(EXAMPLE)).part1()).isEqualTo("Not implemented");
+        assertThat(new Day11(PuzzleInput.of(EXAMPLE)).part1()).isEqualTo("374");
     }
 
     @Test
     public void testPart2() {
-        assertThat(new Day11(PuzzleInput.of(EXAMPLE)).part2()).isEqualTo("Not implemented");
+        assertThat(new Day11(PuzzleInput.of(EXAMPLE)).part2(10)).isEqualTo("1030");
+        assertThat(new Day11(PuzzleInput.of(EXAMPLE)).part2(100)).isEqualTo("8410");
     }
 }

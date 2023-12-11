@@ -6,6 +6,8 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 public class Day11 implements IPuzzle {
 
     public static void main(String[] args) {
@@ -19,14 +21,18 @@ public class Day11 implements IPuzzle {
     }
 
     public String part1() {
-        return "Not implemented";
+        return String.valueOf(new Universe(input).sumShortestPaths(2));
     }
 
     public String part2() {
-        return "Not implemented";
+        return String.valueOf(new Universe(input).sumShortestPaths(1_000_000));
     }
 
-    class Universe {
+    public String part2(final long age) {
+        return String.valueOf(new Universe(input).sumShortestPaths(age));
+    }
+
+    static class Universe {
         final List<Point> galaxies = new ArrayList<>();
         final IntList rowOffsets = new IntArrayList();
         final IntList colOffsets = new IntArrayList();
@@ -52,6 +58,20 @@ public class Day11 implements IPuzzle {
                 final int offset = c > 0 ? colOffsets.getInt(c - 1) : 0;
                 colOffsets.add(offset + (galaxyColumn[c] ? 0 : 1));
             }
+        }
+
+        long sumShortestPaths(final long age) {
+            var sum = 0L;
+            for (int i = 0; i < galaxies.size() - 1; i++) {
+                final var from = galaxies.get(i);
+                for (int j = i; j < galaxies.size(); j++) {
+                    final var to = galaxies.get(j);
+                    sum += abs(to.col() - from.col()) + abs(to.row() - from.row());
+                    sum += (age - 1) * (abs(rowOffsets.getInt(to.row()) - rowOffsets.getInt(from.row())));
+                    sum += (age - 1) * (abs(colOffsets.getInt(to.col()) - colOffsets.getInt(from.col())));
+                }
+            }
+            return sum;
         }
     }
 
