@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.*;
 
 import static dev.gresty.aoc2023.Day10.PipeType.*;
-import static dev.gresty.aoc2023.Day10.Point.*;
+import static dev.gresty.aoc2023.Point.*;
 
 public class Day10 implements IPuzzle {
 
@@ -130,7 +130,7 @@ public class Day10 implements IPuzzle {
     Pipe getPipe(final Point location) {
         var pipe = pipes.get(location);
         if (pipe == null) {
-            final var type = PipeType.forSymbol(input.line(location.row).charAt(location.col));
+            final var type = PipeType.forSymbol(input.line(location.row()).charAt(location.col()));
             pipe = new Pipe(location, type);
             pipes.put(location, pipe);
         }
@@ -172,23 +172,6 @@ public class Day10 implements IPuzzle {
                 case '.' -> G;
                 default -> throw new RuntimeException("Unknown symbol");
             };
-        }
-    }
-
-    record Point(int row, int col) {
-        static final Point N = new Point(-1, 0);
-        static final Point S = new Point(1, 0);
-        static final Point E = new Point(0, 1);
-        static final Point W = new Point(0, -1);
-
-        static final List<Point> DIRECTIONS = List.of(E, N, S, W);
-
-        Point move(final Point direction) {
-            return new Point(row + direction.row, col + direction.col);
-        }
-
-        boolean inRange(final Point limit) {
-            return row >= 0 && col >= 0 && row < limit.row && col < limit.col;
         }
     }
 
