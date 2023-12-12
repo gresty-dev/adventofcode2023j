@@ -21,6 +21,6 @@ public class Day12Test {
 
     @Test
     public void testPart2() {
-        assertThat(new Day12(PuzzleInput.of(EXAMPLE)).part2()).isEqualTo("Not implemented");
+        assertThat(new Day12(PuzzleInput.of(EXAMPLE)).part2()).isEqualTo("525152");
     }
 }
