@@ -33,7 +33,8 @@ public class Day12 implements IPuzzle {
                 .map(this::solve)
                 .mapToInt(List::size)
                 .sum();
-        return String.valueOf(answer);
+//        return String.valueOf(answer);
+        return "Not implemented";
     }
 
     List<String> solve(final RowCondition rowCondition) {
@@ -49,6 +50,7 @@ public class Day12 implements IPuzzle {
                 solutions.add(convertToString(row));
             }
         });
+        System.out.println(solutions.size());
         return solutions;
     }
 
@@ -119,9 +121,10 @@ public class Day12 implements IPuzzle {
 
         static RowCondition parse(String line, int multiplier) {
             String[] onSpace = line.split(" ");
+            String rowString = onSpace[0] + ("?" + onSpace[0]).repeat(multiplier - 1);
             String damagedCountString = onSpace[1] + ("," + onSpace[1]).repeat(multiplier - 1);
             var damagedCounts = Arrays.stream(damagedCountString.split(",")).mapToInt(Integer::parseInt).toArray();
-            return new RowCondition(onSpace[0].repeat(multiplier), damagedCounts);
+            return new RowCondition(rowString, damagedCounts);
         }
     }
 
