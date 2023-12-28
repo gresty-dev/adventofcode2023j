@@ -69,6 +69,15 @@ public class PuzzleInput {
         return objects;
     }
 
+    char[][] as2dCharArray() {
+        final var array = new char[lineCount()][];
+        for (int r = 0; r < lineCount(); r++) {
+            final var line = line(r);
+            array[r] = line.toCharArray();
+        }
+        return array;
+    }
+
     @SneakyThrows
     static PuzzleInput load(final int day) {
         final String filename = filename(day);
