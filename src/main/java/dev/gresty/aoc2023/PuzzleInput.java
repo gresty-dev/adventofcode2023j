@@ -21,7 +21,7 @@ public class PuzzleInput {
     }
 
     public int lineLength() {
-        return data.get(0).length();
+        return data.getFirst().length();
     }
 
     public int lineCount() {
@@ -40,25 +40,31 @@ public class PuzzleInput {
         return lines().map(factory);
     }
 
-    <T> List<T> multiLineObjects(
+    <F, T> List<T> multiLineObjects(
             final Predicate<String> isSeparator,
-            final Supplier<T> newObject,
-            final BiConsumer<T, String> addToObject) {
+            final Supplier<F> newFactory,
+            final BiConsumer<F, String> addToFactory,
+            final Function<F, T> makeObject) {
 
         final var objects = new ArrayList<T>();
         final var iter = lines().iterator();
-        T object = null;
+        F factory = null;
         while (iter.hasNext()) {
             final var line = iter.next();
             if (isSeparator.test(line)) {
-                object = null;
-            } else {
-                if (object == null) {
-                    object = newObject.get();
-                    objects.add(object);
+                if (factory != null) {
+                    objects.add(makeObject.apply(factory));
+                    factory = null;
                 }
-                addToObject.accept(object, line);
+            } else {
+                if (factory == null) {
+                    factory = newFactory.get();
+                }
+                addToFactory.accept(factory, line);
             }
+        }
+        if (factory != null) {
+            objects.add(makeObject.apply(factory));
         }
         return objects;
     }

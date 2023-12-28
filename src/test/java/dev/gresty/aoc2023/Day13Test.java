@@ -30,6 +30,6 @@ public class Day13Test {
 
     @Test
     public void testPart2() {
-        assertThat(new Day13(PuzzleInput.of(EXAMPLE)).part2()).isEqualTo("Not implemented");
+        assertThat(new Day13(PuzzleInput.of(EXAMPLE)).part2()).isEqualTo("400");
     }
 }

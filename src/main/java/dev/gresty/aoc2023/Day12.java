@@ -50,7 +50,7 @@ public class Day12 implements IPuzzle {
                 solutions.add(convertToString(row));
             }
         });
-        System.out.println(solutions.size());
+//        System.out.println(solutions.size());
         return solutions;
     }
 
