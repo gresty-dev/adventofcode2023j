@@ -6,6 +6,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -34,6 +35,10 @@ public class PuzzleInput {
 
     Stream<String> lines() {
         return data.stream();
+    }
+
+    Stream<String> csv() {
+        return data.stream().flatMap(l -> Arrays.stream(l.split(",")));
     }
 
     <T> Stream<T> objects(final Function<String, T> factory) {
